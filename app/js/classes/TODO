@@ -1,0 +1,11 @@
+1) We need a window to track the audit at a high-level (records processed, elapsed time, etc.)
+2) We need the option to view the audit window, or to hide-it. Default is hidden.
+3) When an instruction fails, we need a screen print and and a console print.
+4) It would be nice to develop a small tool to help us identify the elements we are clicking on, and the order of operations. This would
+resemble some sort of audit recorder. This is definitely not that important right now.
+5) We need classes that are client-side for carrying out the instructions and performing the audits. These classes will
+be injected when the DOM is finished loading.
+6) We need to be able to save everything as an "Audit Package" we can load. Most likely just JSON.
+7) We need a window that allows us to load an audit package.
+8) We need to some sort of kill-switch so we can stop the audit early.
+9) Configure grunt to reload each time there is a change. Would also need to close existing windows.

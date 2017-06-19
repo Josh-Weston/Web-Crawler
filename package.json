@@ -1,0 +1,23 @@
+{
+  "name": "electroncrawler",
+  "productName": "Electron Crawler Application",
+  "version": "1.0.0",
+  "scripts": {
+    "pack": "electron-packager . --out C:\\Users\\jweston\\Desktop\\ElectronCrawler --overwrite"
+  },
+  "description": "Web crawler/scraper for automating audit activities",
+  "main": "main.js",
+  "dependencies": {
+    "csv": "^1.1.1",
+    "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "electron": "^1.6.10",
+    "electron-connect": "^0.6.1",
+    "electron-packager": "^8.7.1",
+    "gulp": "^3.9.1",
+    "gulp-run": "^1.7.1"
+  },
+  "author": "jweston",
+  "license": "ISC"
+}

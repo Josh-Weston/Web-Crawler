@@ -1,0 +1,33 @@
+<!doctype html>
+
+<html>
+	<head>
+		<title>Audit Window</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0">
+        <link rel="stylesheet" href="css/styles.css" type="text/css">
+        <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+        
+        <!-- I think because of Electron, it will read it as a module based script, so we need to explictly load it
+        into the window -->
+        <script>window.$ = window.jQuery = require('./js/libs/jquery-3.2.1.min.js')</script>
+        <!--<script src="./js/libs/jquery-3.2.1.min.js" type="text/javascript"></script>-->
+        <script src="js/libs/tether.min.js" type="text/javascript"></script>
+        <script src="./js/libs/bootstrap.min.js" type="text/javascript"></script>
+        <script src="./js/libs/knockout-3.4.2.js" type="text/javascript"></script>
+        <script>require('../auditRenderer')</script>
+        
+	</head>
+	<body>
+        
+        <div class="container">
+            <div class="row">
+                <div class="col">column 1</div>
+                <div class="col">column 2</div>
+                <ul class="list-unstyled" data-bind="foreach: data">
+                    <li class="list-item" data-bind="text: Radios"></li>
+                </ul>
+            </div>
+        </div>
+	</body>
+</html>

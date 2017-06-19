@@ -1,0 +1,1 @@
+1) If we are doing HTTP POSTS/GET Requests, and not using the crawler, we do not need to instantiate a crawler window.

@@ -1,0 +1,11 @@
+{
+"name": "GMail Response Posting",
+"type": "HTTP",
+"loop": "foreach",
+"instructions": [
+    {
+        "method": "POST",
+        "url": "https://docs.google.com/forms/d/e/1FAIpQLSciNkcZl6T2Tt0ZuFRre-I0hThO5QX8RWAHvaeKC6-FUf67bQ/formResponse",
+        "fields": "all"
+    }
+]
