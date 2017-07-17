@@ -1,4 +1,37 @@
-.container {
+.container-main {
     border: 1px solid black;
     border-radius: 5px;
+}
+
+.file-pill {
+    border-radius: 6px;
+    color: white;
+    padding: 2px;
+    margin-bottom: 5px;
+}
+
+.file-pill:hover {
+    opacity: .8;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.modal-body {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.inactive-data {
+    background-color: #9b9b9b;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.audit-field-bind {
+    line-height: 38px;
 }

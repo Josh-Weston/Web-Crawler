@@ -1,4 +1,4 @@
-﻿entry.970613639,entry.1938922275_sentinel,entry.1938922275,entry.1882059492,entry.561368464,fvv,draftResponse,pageHistory,fbzx
-Option C,,Checkbox C,Dropdown B,First record,1,"[null, null, ""-4879680781808958389""]",0,-4.87968E+18
-Option A,,Checkbox A,Dropdown A,Second Record,1,"[null, null, ""-4879680781808958389""]",0,-4.87968E+18
-Option B,,Checkbox B,Dropdown C,Third Record,1,"[null, null, ""-4879680781808958389""]",0,-4.87968E+18
+entry.970613639,entry.1938922275_sentinel,entry.1938922275,entry.1882059492,entry.561368464,fvv,draftResponse,pageHistory,fbzx, testField
+Option C,,Checkbox C,Dropdown B,First record,1,"[null, null, ""-4879680781808958389""]",0,-4.87968E+18,abc
+Option A,,Checkbox A,Dropdown A,Second Record,1,"[null, null, ""-4879680781808958389""]",0,-4.87968E+18,def
+Option B,,Checkbox B,Dropdown C,Third Record,1,"[null, null, ""-4879680781808958389""]",0,-4.87968E+18,ghi

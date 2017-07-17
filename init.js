@@ -18,8 +18,8 @@ class Init {
         
         /*** The audit window that loads the package and shows progress ***/
         auditWin = new BrowserWindow({
-           width: 800,
-           height: 800,
+           maxWidth: 1200,
+           maxHeight: 800,
            minHeight: 800,
            minWidth: 800
         });
@@ -81,17 +81,6 @@ class Init {
             crawlerWin.webContents.executeJavaScript(`require(${rendererPath.replace(/\\/g, '\\\\')})`); //escape forward slashes.
         });
         
-        var flag = true;
-
-        //Fires each time the DOM is reloaded.
-        ipcMain.on('ready', (event, msg) => {
-           if (flag == true) {
-               crawlerWin.webContents.send('query-string', 'reddit');
-               flag = false;
-           }
-
-        });
-
         //Intercept the default close and simply hide the window.
         crawlerWin.on('close', function(e) {
 
@@ -107,12 +96,33 @@ class Init {
             crawlerWin = null;
         });
         
+        
+         //TODO: Remove before production.
+        ipcMain.on('ready', (event, msg) => {
+            devOpenAuditPackage(auditWin);
+        });
+        
+        ipcMain.on('runAudit', (event, msg) => {
+            //msg is passed as an object. We now need to pass this to the audit-engine for processing.
+        });
+        
         return {auditWin: auditWin, crawlerWin: crawlerWin};
 
     } //End function buildInterface.
         
 } //End class init.
 
+//TODO: Remove before production.
+function devOpenAuditPackage(auditWin) {
+    var fileNames = ["C:\\Users\\jweston\\Applications\\ElectronCrawler\\app\\gmail.aud"]
+    fs.readFile(fileNames[0], (err, data) => {
+        if (err) {
+            auditWin.webContents.send('main-error', 'Unable to load audit package')
+        } else {
+            auditWin.webContents.send('audit-file', JSON.parse(data));
+        }     
+    });
+}
 /**
 * Presents a dialogbox so user can open a previously saved audit package for running.
 * @private
@@ -128,7 +138,7 @@ function openAuditPackage(auditWin) {
             if (err) {
                 auditWin.webContents.send('main-error', 'Unable to load audit package')
             } else {
-                auditWin.webContents.send('audit-file', JSON.parse(data)['instructions']);
+                auditWin.webContents.send('audit-file', path.basename(fileNames[0]), JSON.parse(data));
             }     
         });
        
@@ -152,10 +162,14 @@ function openDataFile(auditWin) {
             if (err) {
                 auditWin.webContents.send('main-error', 'Unable to load data file')
             } else {
-                //Output is a multidimensional array, with the first elment as the header.
-                //Still not sure on the best way to handle this. Should these files be passed at all to the renderer?
+                //Output is a multidimensional array, with the first elment as the header. Only header is sent to the renderer.
                 csv.parse(data, function(err, csvOutput) {
-                    auditWin.webContents.send('data-file', csvOutput);
+                    auditWin.webContents.send('data-file', {
+                        filename: path.basename(fileNames[0]), 
+                        head: csvOutput[0],
+                        fullpath: fileNames[0],
+                        numRecords: csvOutput.length - 1
+                    });
                 });
             }     
         });

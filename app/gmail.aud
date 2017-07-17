@@ -6,6 +6,13 @@
     {
         "method": "POST",
         "url": "https://docs.google.com/forms/d/e/1FAIpQLSciNkcZl6T2Tt0ZuFRre-I0hThO5QX8RWAHvaeKC6-FUf67bQ/formResponse",
-        "fields": "all"
+        "dataFields": ["entry.970613639", "entry.1938922275", "entry.1882059492", "entry.561368464"],
+        "staticFields": [
+            {"key": "fvv", "value": 1},
+            {"key": "draftResponse", "value": [null, null, "-4879680781808958389"]},
+            {"key": "pageHistory", "value": 0},
+            {"key": "fbzx", "value": -4879680781808958389},
+            {"key": "entry.1938922275_sentinel", "value": ""}
+        ]
     }
-]
+]}

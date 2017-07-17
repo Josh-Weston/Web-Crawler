@@ -3,7 +3,10 @@
 * @class InstructionEngine
 * @constructor
 */
-class InstructionEngine () {
+
+
+//TODO: This should produce a log file that shows the audit's performance and how each record performed.
+class AuditEngine {
     
     //Receives an array of instructions to perform.
     constructor(instructions) {
@@ -25,6 +28,12 @@ class InstructionEngine () {
         
     }
     
+    createLog() {
+        
+    }
+    
     
     
 } //End class InstructionEngine.
+
+module.exports = AuditEngine;
