@@ -114,7 +114,7 @@ class Init {
 
 //TODO: Remove before production.
 function devOpenAuditPackage(auditWin) {
-    var fileNames = ["C:\\Users\\jweston\\Applications\\ElectronCrawler\\app\\gmail.aud"]
+    var fileNames = [path.join(__dirname, 'app', 'gmail.aud')];
     fs.readFile(fileNames[0], (err, data) => {
         if (err) {
             auditWin.webContents.send('main-error', 'Unable to load audit package')

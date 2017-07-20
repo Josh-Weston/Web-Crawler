@@ -1,1 +1,2 @@
 1) If we are doing HTTP POSTS/GET Requests, and not using the crawler, we do not need to instantiate a crawler window.
+2) We need a way to CRUD the instructions for the audit. We should be able to create an instruction 1 at a time.
