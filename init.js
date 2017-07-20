@@ -8,6 +8,7 @@ const path = require('path');
 const client = require('electron-connect').client;
 const fs = require('fs');
 const csv = require('csv');
+const AuditEngine = require('./app/js/classes/audit-engine');
 
 class Init {
     
@@ -103,7 +104,8 @@ class Init {
         });
         
         ipcMain.on('runAudit', (event, msg) => {
-            //msg is passed as an object. We now need to pass this to the audit-engine for processing.
+            var auditObj = new AuditEngine(msg);
+            auditObj.startAudit();
         });
         
         return {auditWin: auditWin, crawlerWin: crawlerWin};
@@ -167,6 +169,7 @@ function openDataFile(auditWin) {
                     auditWin.webContents.send('data-file', {
                         filename: path.basename(fileNames[0]), 
                         head: csvOutput[0],
+                        data: csvOutput,
                         fullpath: fileNames[0],
                         numRecords: csvOutput.length - 1
                     });

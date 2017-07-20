@@ -1,5 +1,4 @@
 const ipcRenderer = require('electron').ipcRenderer;
-const auditEngine = require('./app/js/classes/audit-engine');
 
 var VM = function() {
     var self = this;
@@ -25,6 +24,7 @@ var VM = function() {
     //User selects what data file to bind as input.
     self.bindDataFile = function(dataObj, event) {
         self.auditFile().boundDataInput(dataObj);
+        self.auditFile().data = self.dataFile().data;
     };
     
     //We receive the calling data field, and the mapped field for binding.
@@ -66,7 +66,8 @@ var VM = function() {
         //Create a package and send it back.
         var auditPackage = {
             dataFields: [],
-            staticFields: self.auditFile().instructions[0].staticFields
+            staticFields: self.auditFile().instructions[0].staticFields,
+            data: self.auditFile().data
         };
                 
         for (let dataObj of self.auditFile().boundDataFieldMap()) {
@@ -126,7 +127,6 @@ $(function(){
     //Data file to post against. We only accept the head and we only accept csv.
     //arg = {filename, head, fullpath}
     ipcRenderer.on('data-file', (event, arg) => {
-        console.log(arg);
         vm.dataFile(arg);
     });
 
