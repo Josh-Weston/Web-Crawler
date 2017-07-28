@@ -1,5 +1,3 @@
-const ipcRenderer = require('electron').ipcRenderer;
-
 var VM = function() {
     var self = this;
     self.gui = null;
@@ -25,6 +23,7 @@ var VM = function() {
     self.bindDataFile = function(dataObj, event) {
         self.auditFile().boundDataInput(dataObj);
         self.auditFile().data = self.dataFile().data;
+		self.auditFile().head = self.dataFile().head;
     };
     
     //We receive the calling data field, and the mapped field for binding.
@@ -62,12 +61,12 @@ var VM = function() {
     //From here, what do we want? Hand-off to the audit engine?
     self.runAudit = function() {
         
-        console.log(self.auditFile());
         //Create a package and send it back.
         var auditPackage = {
             dataFields: [],
             staticFields: self.auditFile().instructions[0].staticFields,
-            data: self.auditFile().data
+            data: self.auditFile().data,
+			head: self.auditFile().head
         };
                 
         for (let dataObj of self.auditFile().boundDataFieldMap()) {
@@ -78,7 +77,7 @@ var VM = function() {
             });
             
         };
-        
+		
         ipcRenderer.send('runAudit', auditPackage);
     }
     
@@ -109,6 +108,8 @@ $(function(){
         arg.boundDataOutput = ko.observable();
         arg.boundDataFieldMap = ko.observableArray();
         arg.fullymapped = ko.observable(false);
+		arg.numPosted = 0;
+		arg.posted = ko.observable(false);
         
         //Add observableArray for binding data fields.
         for (var i = 0; i < arg.instructions[0].dataFields.length; i++) {
@@ -134,10 +135,20 @@ $(function(){
     ipcRenderer.on('main-error', (event, arg) => {
         console.log(arg);
     });
+	
+	ipcRenderer.on('posted', function() {
+		vm.auditFile().numPosted++;
+		var progress = (vm.auditFile().numPosted / vm.dataFile().numRecords) * 100;
+		$('#auditProgress').css('width', `${progress}%`).attr('aria-valuenow', progress).text(`${progress}%`)  
+	});
+	
+	ipcRenderer.on('posted-all', function() {
+		vm.auditFile().posted(true);
+	});
     
     ko.applyBindings(vm);
     
     /* Signify to main process that the DOM is ready */
     ipcRenderer.send('ready');
-      
+
 });

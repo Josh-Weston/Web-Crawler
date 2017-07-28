@@ -70,3 +70,12 @@ var myRequest = request({
     console.log(response.statusCode);
 });
 */
+
+/*
+
+
+Visual instructions:
+
+More difficult because we have to identify the element on the page.
+
+

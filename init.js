@@ -42,7 +42,10 @@ class Init {
                   },
                   {label: 'Show Crawler',
                    click() {crawlerWin.show();}
-                  }
+                  },
+				  {label: 'Landing Page',
+				   click() {auditWin.webContents.send('landing');}
+				  }
                 ]
              }];
 
@@ -102,9 +105,27 @@ class Init {
         ipcMain.on('ready', (event, msg) => {
             devOpenAuditPackage(auditWin);
         });
+		
+		
+		//Tells us whether the user is opening an audit package or creating a new one.
+		ipcMain.on('user-select', (event, msg) => {
+			console.log(msg);
+			// auditWin.loadURL(path.join(__dirname, 'app', 'index.html'));
+			// we can wholesale load the pages into the audit window, which sounds like the easiest approach.
+		});
         
         ipcMain.on('runAudit', (event, msg) => {
+			
             var auditObj = new AuditEngine(msg);
+			
+			auditObj.on('posted', function() {
+				auditWin.webContents.send('posted');
+			});
+			
+			auditObj.on('done', function() {
+				auditWin.webContents.send('posted-all');
+			});
+			
             auditObj.startAudit();
         });
         
@@ -169,7 +190,7 @@ function openDataFile(auditWin) {
                     auditWin.webContents.send('data-file', {
                         filename: path.basename(fileNames[0]), 
                         head: csvOutput[0],
-                        data: csvOutput,
+                        data: csvOutput.slice(1),
                         fullpath: fileNames[0],
                         numRecords: csvOutput.length - 1
                     });

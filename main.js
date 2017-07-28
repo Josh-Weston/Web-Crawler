@@ -28,6 +28,6 @@ app.on('activate', () => {
    //on Mac, it is common to recreate the window if it is still
    //open in the dock, but no windows are open.
    if (auditWin === null) {
-      buildInterface();
+      init.buildInterface();
    }
  });

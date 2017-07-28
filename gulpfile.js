@@ -11,6 +11,6 @@ gulp.task('default', () => {
     gulp.watch(['./*.*'], electron.restart);
     gulp.watch(['./app/index.html'], electron.reload);
     gulp.watch(['./app/css/*.css'], electron.reload);
-    gulp.watch(['./app/js/classes/*.js'], electron.reload); //don't want it watching libraries.
+    gulp.watch(['./app/js/classes/*.js'], electron.restart); //don't want it watching libraries.
 
 }); //Default task.

@@ -13,153 +13,22 @@
         <script>window.$ = window.jQuery = require('./js/libs/jquery-3.2.1.min.js')</script>
         <!--<script src="./js/libs/jquery-3.2.1.min.js" type="text/javascript"></script>-->
         <script src="js/libs/tether.min.js" type="text/javascript"></script>
-        <script src="./js/libs/bootstrap.min.js" type="text/javascript"></script>
-        <script src="./js/libs/knockout-3.4.2.js" type="text/javascript"></script>
-        <script>require('../auditRenderer')</script>
+        <script src="./js/libs/bootstrap.min.js"></script>
         
 	</head>
+	
+	<!-- Body is completely replaced by AJAX calls -->
+	<!-- JS Scripts persist unless we use a namespace and wipe it -->
 	<body>
-        
-        <div class="container container-main">
-            <div class="row">
-                <div class="col-4 text-center" data-bind="with: auditFile">
-                    <h5>Audit File</h5>
-                    <div class="file-pill bg-info text-center pointer" data-bind="click: $root.showAuditFile">Audit File</div>
-                </div>
-                <div class="col-4 text-center">
-                    <h5>Input File</h5>
-                    <p data-bind="visible: dataFile() === undefined">Please open input data file</p>
-                    <ul class="list-unstyled" data-bind="with: dataFile">
-                        <li class="list-item file-pill text-center bg-success pointer" data-bind="{click: $root.showDataFile, text: filename}"></li>
-                    </ul>
-                </div>
-                <div class="col-4 text-center">
-                    <h5>Output File</h5>
-                    <p data-bind="visible: outputFile != undefined">Open output data file if required</p>
-                    <ul class="list-unstyled" data-bind="with: outputFile">
-                        <li class="list-item">Output Files</li>
-                    </ul>
-                </div>
-            </div>
-            <div data-bind="visible: auditReady">
-                <div class="d-inline"># of records to post:</div>
-                <!-- ko with: dataFile() -->
-                <span data-bind="text: numRecords"></span>
-                <!-- /ko -->
-
-                <div class="row">
-    <!--                <button type="button" class="btn btn-primary" data-bind="enable: $root.auditFile().fullymapped($root.checkDataFieldBindings())">Run Audit</button>-->
-                    <button type="button" class="btn btn-primary w-100 " data-bind="click: runAudit">Run Audit</button>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="progress">
-                            <div id="auditProgress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0"
-                            aria-valuemin="0" aria-valuemax="100" style="width:0%">
-                            0%
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- TODO: Turn Green When Bound to our Audit File -->
-        <!-- Data Modal -->
-        <div id="dataModal" class="modal fade" role="dialog" data-backdrop="static">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content" data-bind="with: activeDataFile">
-                    <div class="modal-header">
-                        <h4 class="modal-title" data-bind="text: filename"></h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <ul class="list-unstyled" data-bind="foreach: head">
-                            <li class="alert inactive-data" data-bind="text: $data"></li>
-                        </ul>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Audit Modal -->
-        <div id="auditModal" class="modal fade" role="dialog" data-backdrop="static">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content" data-bind="with: auditFile">
-                    <div class="modal-header">
-                        <h4 class="modal-title" data-bind="text: name"></h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p data-bind="text: 'Type: ' + type"></p>
-                        <p><u>Instructions</u></p>
-                        <p class="d-inline">For each record in:</p>
-                        <div class="dropdown d-inline ml-5">
-                            <button id="auditDataBind" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" data-bind="text: $root.auditFile().boundDataInput() === undefined ? 'Choose Data File' : $root.auditFile().boundDataInput().filename">
-                            <span class="caret"></span></button>
-                            <ul class="dropdown-menu" data-bind="with: $root.dataFile">
-                                <li class="cursor-pointer" data-bind="{click: $root.bindDataFile, text: filename}"></li>
-                            </ul>
-                        </div>
-                        <p data-bind="text: `Send a ${instructions[0].method} Request to`"></p>
-                        <p data-bind="text: instructions[0].url"></p>
-                        <p>And populate the header with the following data fields: </p>
-                        <div class='container' data-bind='foreach: {data: $root.auditFile().boundDataFieldMap(),  as: "field"}'>
-                            <div class='row text-center mb-1'>
-                                <div class='col-6 audit-field-bind' data-bind="text: field.auditField"></div>
-                                <div class='col-6' data-bind="with: $root.auditFile().boundDataInput">
-                                    <div class="dropdown">
-                                        <button id="auditDataBind" class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" data-bind="text: field.dataField() === undefined ? 'Choose Data' : field.dataField()">
-                                        <span class="caret"></span></button>
-                                        <ul class="dropdown-menu">
-                                            <li class="dropdown-header" data-bind="text: `Fields in ${$root.auditFile().boundDataInput().filename}`"></li>
-                                            <!-- ko foreach: $root.auditFile().boundDataInput().head -->
-                                                <li class="cursor-pointer" data-bind="{click: function(data, event) {$root.bindDataField(field.auditField, data, event)}, text: $data}"></li>
-                                            <!-- /ko -->
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                       <br/>
-                       <p>And populate the header with the following static fields: </p>
-                        <div class='container' data-bind='foreach: instructions[0].staticFields'>
-                            <div class='row text-center'>
-                                <div class='col-6' data-bind="text: $data.key"></div>
-                                <div class='col-6' data-bind="text: $data.value"></div>
-                            </div>
-                        </div>
-                        <br/>
-                        
-                        <!-- No required for current iteration
-                        <p class="d-inline">And output the data to:</p>
-                        <div class="dropup d-inline ml-5">
-                            <button id="auditDataBind" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" data-bind="text: boundDataOutput() === undefined ? 'Choose Output' : boundDataOutput()">
-                            <span class="caret"></span>Choose Output</button>
-                            <ul class="dropdown-menu">
-                                <li class="cursor-pointer" data-bind="{click: $root.bindOutput}">Not required</li>
-                                <li class="cursor-pointer" data-bind="{click: $root.bindOutput}">Output to file</li>
-                            </ul>
-                        </div>
-                        -->
-                        
-                        
-              <!--          <ul class="list-unstyled" data-bind="foreach: head">
-                            <li class="alert inactive-data" data-bind="text: $data"></li>
-                        </ul>-->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
+		
+		<!-- Landing Page Shown Initially -->
+		<div class="text-center offset-2 col-8">
+			<h4 class="mt-5">How would you like to start:</h4>
+			<button class="btn btn-primary d-block w-100 pointer mt-4" id="btnOpenAudit">Open Audit Package</button>
+			<div class="mt-4"></div>
+			<button class="btn btn-primary d-block w-100 pointer" id="btnNewAudit">Create New Audit Package</button>
+		</div>
+		<script src="../landingnav.js"></script>
+		
 	</body>
 </html>
